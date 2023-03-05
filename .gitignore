@@ -1,0 +1,7 @@
+__pycache__
+.idea
+/camera_images
+/coco_dataset
+/env
+.DS_store
+test.py
