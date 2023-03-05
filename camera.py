@@ -13,6 +13,8 @@ class Camera:
 
     def capture_image():
         cap = cv2.VideoCapture(0)
+        # wait 1 second for camera to open
+        cv2.waitKey(1000)
         Camera.result, Camera.frame = cap.read()
     
     def find_elephant() -> bool:

@@ -28,6 +28,8 @@ cap = cv2.VideoCapture(0)
 # click_button = function
 # cv2.namedWindow("Frame")
 
+# wait for camera to open
+cv2.waitKey(1000)
 
 while True:
     
