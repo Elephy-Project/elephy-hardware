@@ -2,12 +2,12 @@
 # id: camera-1
 import requests
 import time
+import datetime
+import os
 
 # import camera with model class
 from camera import Camera
-
-# url to backend
-BACKEND_URL = 'https://elephy-backend.vercel.app'
+from utils import BACKEND_URL, PATH_TO_SAVE_IMAGES, DATE_FORMAT
 
 
 
@@ -21,8 +21,14 @@ while True:
         print(response)
         
     Camera.save_image()
+    
+    # delete old folder
+    dirs = os.listdir(PATH_TO_SAVE_IMAGES)
+    today = datetime.date.today()
+    for directory in dirs:
+        date_object = datetime.datetime.strptime(directory, DATE_FORMAT).date()
+        if today - date_object >= datetime.timedelta(days=2):
+            path = os.path.join(PATH_TO_SAVE_IMAGES, directory)
+            os.rmdir(path)
+   
     time.sleep(10)
-
-
-    # TODO: delete pics that have been taken 1 day ago.
-    # approx. 1440 pics if a pic is captured every 10 secs.

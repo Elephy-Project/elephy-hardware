@@ -1,10 +1,11 @@
 import cv2
-from datetime import datetime
+import datetime
+import os
 from model import model, classes
+from utils import PATH_TO_SAVE_IMAGES, DATE_FORMAT, TIME_FORMAT
 
 
 # folder to save images
-PATH_TO_SAVE_IMAGES = "camera_images"
 
 class Camera:
     
@@ -36,13 +37,21 @@ class Camera:
             return False
         
     def save_image():
-        now = datetime.now()
-        time_string = now.strftime("%d-%m-%Y_%H:%M:%S")
-        # ex: camera_images/05-03-2023_00:07:40.png
-        path = f'{PATH_TO_SAVE_IMAGES + "/" + time_string}.png'
+        Camera.make_date_directory()
+        now = datetime.datetime.now()
+        time_string = now.strftime(TIME_FORMAT)
+        # ex: camera_images/2023-03-05/00:07:40.png
+        path = f'{PATH_TO_SAVE_IMAGES + "/" + now.strftime(DATE_FORMAT) + "/"+ time_string}.png'
         print(path)
         cv2.imwrite(path, Camera.frame)
         
     def make_date_directory():
-        pass
+        today = datetime.date.today()
+        dirs = os.listdir(PATH_TO_SAVE_IMAGES)
+        today_string = str(today)
+        if today_string not in dirs:
+            path = os.path.join(PATH_TO_SAVE_IMAGES, today_string)
+            os.mkdir(path)
+        
+        
     
