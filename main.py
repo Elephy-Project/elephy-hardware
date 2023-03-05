@@ -24,5 +24,5 @@ while True:
     time.sleep(10)
 
 
-    # TODO: delete pics that have been taken 3 hrs ago.
-    # approx. 1080 pics if a pic is captured every 10 secs.
+    # TODO: delete pics that have been taken 1 day ago.
+    # approx. 1440 pics if a pic is captured every 10 secs.

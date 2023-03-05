@@ -1,5 +1,5 @@
 import cv2
-import time
+from datetime import datetime
 from model import model, classes
 
 
@@ -36,10 +36,13 @@ class Camera:
             return False
         
     def save_image():
-        time_tuple = time.localtime()
-        time_string = time.strftime("%d-%m-%Y_%H:%M:%S", time_tuple)
+        now = datetime.now()
+        time_string = now.strftime("%d-%m-%Y_%H:%M:%S")
         # ex: camera_images/05-03-2023_00:07:40.png
         path = f'{PATH_TO_SAVE_IMAGES + "/" + time_string}.png'
         print(path)
         cv2.imwrite(path, Camera.frame)
+        
+    def make_date_directory():
+        pass
     
