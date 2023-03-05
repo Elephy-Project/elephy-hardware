@@ -16,7 +16,7 @@ class Camera:
         cv2.waitKey(1000)
         Camera.result, Camera.frame = cap.read()
     
-    def find_elephant() -> bool:
+    def find_elephant():
         """check if there is an elephant in the image
 
         Returns:
@@ -50,6 +50,3 @@ class Camera:
         if today_string not in dirs:
             path = os.path.join(PATH_TO_SAVE_IMAGES, today_string)
             os.mkdir(path)
-        
-        
-    
