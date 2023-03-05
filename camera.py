@@ -5,8 +5,6 @@ from model import model, classes
 from utils import PATH_TO_SAVE_IMAGES, DATE_FORMAT, TIME_FORMAT
 
 
-# folder to save images
-
 class Camera:
     
     frame = None
