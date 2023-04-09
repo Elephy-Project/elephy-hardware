@@ -4,6 +4,7 @@ import requests
 import time
 import datetime
 import os
+import shutil
 
 # import camera with model class
 from camera import Camera
@@ -26,9 +27,10 @@ while True:
     dirs = os.listdir(PATH_TO_SAVE_IMAGES)
     today = datetime.date.today()
     for directory in dirs:
-        date_object = datetime.datetime.strptime(directory, DATE_FORMAT).date()
-        if today - date_object >= datetime.timedelta(days=2):
-            path = os.path.join(PATH_TO_SAVE_IMAGES, directory)
-            os.rmdir(path)
+        if not directory.startswith("."):
+            date_object = datetime.datetime.strptime(directory, DATE_FORMAT).date()
+            if today - date_object >= datetime.timedelta(days=2):
+                path = os.path.join(PATH_TO_SAVE_IMAGES, directory)
+                shutil.rmtree(path)
    
     time.sleep(10)
