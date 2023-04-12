@@ -1,6 +1,8 @@
 import cv2
+
 from model import model, classes
 from utils import make_date_directory
+from PIL import Image
 
 
 class Camera:
@@ -31,8 +33,16 @@ class Camera:
                 if class_name == "elephant" and score > 0.5:
                     return True
             return False
-        
+    
+    def image_compress(path):
+        # image compression
+        # reduce the quality 50% and change to jpeg
+        image = Image.open(path)
+        compression_level = 50
+        print(path)
+        image.save(path, quality=compression_level)
+    
     def save_image(path):
         make_date_directory()
         cv2.imwrite(path, Camera.frame)
-
+        Camera.image_compress(path)

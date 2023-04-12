@@ -17,8 +17,8 @@ PARENT_FOLDER_ID='1tSmexPSuwZb9AO2nFZdR-JFJ_6o6zdZ4'
 def create_file_name():
     now = datetime.datetime.now()
     time_string = now.strftime(TIME_FORMAT)
-    # ex 00:07:40.png
-    file_name = time_string + '.png'
+    # ex 00:07:40.jpg
+    file_name = time_string + '.jpg'
     return file_name
 
 def push_to_drive(service, parent_folder_id, file_name, path_to_file):

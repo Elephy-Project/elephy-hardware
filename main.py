@@ -20,8 +20,7 @@ while True:
     now = datetime.datetime.now()
     time_string = now.strftime(TIME_FORMAT)
     # ex: camera_images/2023-03-05/00:07:40.png
-    path = f'{PATH_TO_SAVE_IMAGES + "/" + now.strftime(DATE_FORMAT) + "/"+ time_string}.png'
-    print(path)
+    path = f'{PATH_TO_SAVE_IMAGES + "/" + now.strftime(DATE_FORMAT) + "/"+ time_string}.jpg'
     
     # save every image whether or not an elephant is found
     Camera.save_image(path)
