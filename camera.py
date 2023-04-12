@@ -1,8 +1,6 @@
 import cv2
-import datetime
-import os
 from model import model, classes
-from utils import PATH_TO_SAVE_IMAGES, DATE_FORMAT, TIME_FORMAT, make_date_directory
+from utils import make_date_directory
 
 
 class Camera:
