@@ -23,14 +23,15 @@ while True:
     save_img = False
     
     if Camera.find_elephant(): # return true if an elephant is found on the pic that has been scanned
-        # sent req to backend
-        req_obj = {"informant": "camera-1"}
-        response = requests.post(url=f"{BACKEND_URL}/record", json=req_obj)
-        print(response)
         # save every image whether or not an elephant is found
         Camera.save_image(path)
         save_img = True
-        google_drive_handler.upload_picture(path)
+        img_link = google_drive_handler.upload_picture(path)
+        img_link = img_link.split("&export")[0]
+        # sent req to backend
+        req_obj = {"informant": "camera-1", "img_link": img_link}
+        response = requests.post(url=f"{BACKEND_URL}/record", json=req_obj)
+        print(response)
     
     if not save_img:
         Camera.save_image(path)
