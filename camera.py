@@ -42,7 +42,7 @@ class Camera:
         print(path)
         image.save(path, quality=compression_level)
     
-    def save_image(path):
+    async def save_image(path):
         make_date_directory()
         cv2.imwrite(path, Camera.frame)
         Camera.image_compress(path)
