@@ -1,76 +1,49 @@
 import cv2
-from matplotlib import pyplot as plt
+import tensorflow as tf
 
-# opencv DNN
-# see more on yolo, mobilenet
-network = cv2.dnn.readNet("dnn_model/yolov4-tiny.weights", "dnn_model/yolov4-tiny.cfg")
-model = cv2.dnn_DetectionModel(network)
+import json
 
-# more size = more precise predicting (bigger resolution) but slower processing
-model.setInputParams(size=(320, 320), scale=1/255)
+# load class
+with open("faster_rcnn_resnet152_v1_640x640_1/mscoco_complete_label_map.json") as file:
+    c = json.load(file)
 
-# load class lists
 classes = []
-with open("dnn_model/classes.txt", "r") as file_object:
-    for class_name in file_object.readlines():
-        class_name = class_name.strip()
-        classes.append(class_name)
-        
-
-####################################################################################
-
-# read from image
-img = cv2.imread("../elephant.jpg")
-img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-  
-# Creates the environment 
-# of the picture and shows it
-plt.subplot(1, 1, 1)
-plt.imshow(img_rgb)
-plt.show()
-
-# while True:
-    
-#     # get frames
-#     # ret: true if there is a frame
-#     ret, frame = cap.read()
-    
-#     # object detection
-#     # frame = object on the specific frame
-#     # return 3 things: class of the object (id), 
-#     # score = confidence
-#     # bound boxes = box around the object, usually get the 2 coordinates of 
-#     # the top left corner, height, width
-#     (class_ids, scores, bboxes) = model.detect(frame)
-    
-#     # may detect multiple objects
-#     # need to loop to get every object
-#     # zip() is a function to extract at the same time in the loop (multiple arrays)
-#     for class_id, score, bbox in zip(class_ids, scores, bboxes):
-#         # draw bounding box
-#         x, y, w, h = bbox
-        
-#         # put text on the frame with str(class_id)
-#         # frame = frame to display
-#         # class_name = name of the class_id
-#         # (x, y - 5) = where to put the text
-#         # cv2.FONT_HERSHEY_PLAIN = font
-#         # 2 = size of the text
-#         # (200, 0, 50) = colour
-#         # 2 = thickness
-#         class_name = classes[class_id]
-#         cv2.putText(frame, class_name, (x, y - 10), cv2.FONT_HERSHEY_PLAIN, 2, (255, 255, 255), 2)
-        
-#         # draw rectangle on the frame
-#         # point 1 (x, y) = point on the top left
-#         # point 2 (x + w, y + h) = point on bottom right
-#         # colour of rectangle = (200, 0, 50)
-#         # thickness = 3
-#         cv2.rectangle(frame, (x, y), (x + w, y + h), (200, 0, 50), 3)
-    
-    
-#     cv2.imshow("Frame", frame)
-#     cv2.waitKey(1)
+for i in c:
+    classes.append(i["item"]["display_name"])
 
 
+# load model
+MODEL_PATH = "faster_rcnn_resnet152_v1_640x640_1"
+model = tf.saved_model.load(MODEL_PATH)
+
+cap = cv2.VideoCapture(0)
+
+
+while True:
+    ret, frame = cap.read()
+
+    rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
+    input_frame = tf.expand_dims(rgb_frame, axis=0)
+    input_frame = tf.image.resize(input_frame, (640, 640))
+    input_frame = tf.cast(input_frame, dtype=tf.uint8)
+
+    detections = model(input_frame)
+    boxes = detections['detection_boxes'][0].numpy()
+    class_ids = detections['detection_classes'][0].numpy().astype(int)
+    scores = detections['detection_scores'][0].numpy()
+
+    for i in range(len(boxes)):
+        if scores[i] >= 0.7:
+            ymin, xmin, ymax, xmax = boxes[i]
+            # denormalized
+            xmin = int(xmin * frame.shape[1])
+            xmax = int(xmax * frame.shape[1])
+            ymin = int(ymin * frame.shape[0])
+            ymax = int(ymax * frame.shape[0])
+            class_id = class_ids[i]
+            cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), (0, 255, 0), 2)
+            cv2.putText(frame, classes[class_id], (xmin, ymin - 10), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+
+    cv2.imshow("Frame", frame)
+    cv2.waitKey(1)
