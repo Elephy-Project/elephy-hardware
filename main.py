@@ -23,7 +23,7 @@ async def main():
         path = f'{PATH_TO_SAVE_IMAGES + "/" + now.strftime(DATE_FORMAT) + "/"+ time_string}.jpg'
         save_img = False
         
-        if Camera.find_elephant(): # return true if an elephant is found on the pic that has been scanned
+        if Camera.find_elephant_yolov4_model(): # return true if an elephant is found on the pic that has been scanned
             # save every image whether or not an elephant is found
             await Camera.save_image(path)
             save_img = True
