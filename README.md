@@ -30,5 +30,15 @@ USERNAME and PASSWORD
 SECRET_KEY and ALGORITHM
 - Secret key and Algorithm to create jwt token in backend
 ```
+## Run camera
+### 1. Create environment
+`python3 -m venv env`
 
+### 2. Activate the environment
+`. env/bin/activate`
 
+### 3. Install requirements
+`pip install -r requirements.txt`
+
+### 4. Run camera
+`python3 -m main.py`
