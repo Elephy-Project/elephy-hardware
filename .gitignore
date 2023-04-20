@@ -9,3 +9,4 @@ credentials.json
 token.json
 .env
 /faster_rcnn_resnet152_v1_640x640_1
+/data

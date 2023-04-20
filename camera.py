@@ -68,8 +68,8 @@ class Camera:
                     tl_y = int(tl_y * Camera.frame.shape[0])
                     br_y = int(br_y * Camera.frame.shape[0])
                     
-                    cv2.rectangle(Camera.frame, (tl_x, tl_y), (br_x, br_y), (0, 255, 0), 2)
-                    cv2.putText(Camera.frame, class_name, (tl_x, tl_y - 10), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+                    cv2.rectangle(Camera.frame, (tl_x, tl_y), (br_x, br_y), (0, 0, 255), 2)
+                    cv2.putText(Camera.frame, class_name, (tl_x, tl_y - 10), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
 
                 if class_name == "elephant" and score >= 0.7:
                     return True

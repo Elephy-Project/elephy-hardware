@@ -36,9 +36,9 @@ while True:
     for i in range(len(boxes)):
         score = scores[i]
         class_name = classes[class_ids[i]]
-        if class_name == "elephant":
-            print("score: ", score)
-        if scores[i] >= 0.7:
+        # if class_name == "elephant":
+        #     print("score: ", score)
+        if score >= 0.7:
             ymin, xmin, ymax, xmax = boxes[i]
             # denormalized
             xmin = int(xmin * frame.shape[1])
@@ -46,8 +46,9 @@ while True:
             ymin = int(ymin * frame.shape[0])
             ymax = int(ymax * frame.shape[0])
             class_id = class_ids[i]
-            cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), (0, 255, 0), 2)
-            cv2.putText(frame, class_name, (xmin, ymin - 10), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+            cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), (0, 0, 255), 2)
+            cv2.putText(frame, class_name, (xmin, ymin - 10), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+            cv2.putText(frame, f"{score:.2f}", (xmax, ymin - 10), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
 
     cv2.imshow("Frame", frame)
-    cv2.waitKey(0)
+    cv2.waitKey(1)
